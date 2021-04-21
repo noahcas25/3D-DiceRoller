@@ -12,7 +12,7 @@ public class Dice : MonoBehaviour
     void Update()
     {
         if(!landed) {
-            this.transform.Rotate(new Vector3(45, 45, 0) * 2 * Time.deltaTime);
+            this.transform.Rotate(new Vector3(45, 45, 0) * (float) 2.5 * Time.deltaTime);
             canRoll = false;
         } 
     }
@@ -27,7 +27,7 @@ public class Dice : MonoBehaviour
 
      private IEnumerator RollTimer() 
     {
-        yield return new WaitForSeconds((float) 1.5);
+        yield return new WaitForSeconds((float) 2);
         canRoll = true;
     }
 }
