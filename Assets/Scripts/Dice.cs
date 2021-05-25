@@ -8,7 +8,6 @@ public class Dice : MonoBehaviour
     public bool landed = false;
     public bool canRoll;
 
-    // Update is called once per frame
     void Update()
     {
         if(!landed) {

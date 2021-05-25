@@ -21,19 +21,12 @@ public class Menu : MonoBehaviour
          soundSwitcher.PlayOneShot(start);
          cameraPosition = diceCamera.transform.position;
          dicePosition = dice.transform.position;
+
     }
 
     public void Roll() { 
         if(dice.transform.GetComponent<Dice>().canRoll) {
-
             dice.transform.GetComponent<Dice>().landed = false;
-
-            int rand1 = Random.Range(30, 180);
-            int rand2 = Random.Range(30, 180);
-            int rand3 = Random.Range(30, 180);
-
-            dice.transform.Rotate(new Vector3(rand1, rand2, rand3)); 
-
             setPositions();
         }
     }
