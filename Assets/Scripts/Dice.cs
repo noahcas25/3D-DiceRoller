@@ -11,7 +11,7 @@ public class Dice : MonoBehaviour
     void Update()
     {
         if(!landed) {
-            this.transform.Rotate(new Vector3(45, 45, 0) * (float) 2.5 * Time.deltaTime);
+            this.transform.Rotate(new Vector3(45, 45, 0) * (float) 3 * Time.deltaTime);
             canRoll = false;
         } 
     }

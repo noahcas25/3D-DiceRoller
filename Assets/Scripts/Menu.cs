@@ -18,15 +18,17 @@ public class Menu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //  dice.GetComponent<Rigidbody>().useGravity = false;
          soundSwitcher.PlayOneShot(start);
+         soundSwitcher.SetScheduledStartTime(10);
          cameraPosition = diceCamera.transform.position;
          dicePosition = dice.transform.position;
 
     }
 
     public void Roll() { 
-        if(dice.transform.GetComponent<Dice>().canRoll) {
-            dice.transform.GetComponent<Dice>().landed = false;
+        if(dice.GetComponent<Dice>().canRoll) {
+            dice.GetComponent<Dice>().landed = false;
             setPositions();
         }
     }
