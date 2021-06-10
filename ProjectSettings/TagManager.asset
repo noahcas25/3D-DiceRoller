@@ -7,6 +7,8 @@ TagManager:
   - Table
   - RollButton
   - BackButton
+  - Dice
+  - PauseMenu
   layers:
   - Default
   - TransparentFX

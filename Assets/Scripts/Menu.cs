@@ -7,36 +7,39 @@ using TMPro;
 
 public class Menu : MonoBehaviour
 {
-    public GameObject dice;
+    private GameObject dice;
     private Vector3 dicePosition;
 
-    private GameObject RollButton;
-    private GameObject RollButtonChild;
+    private GameObject rollButton;
+    private GameObject rollButtonChild;
 
     public AudioSource soundSwitcher;
     public AudioClip start;
+    private GameObject pauseMenu;
 
     // Start is called before the first frame update
     void Start()
-    {                 
-         RollButton = GameObject.FindWithTag("RollButton");
-         RollButtonChild = RollButton.transform.GetChild(1).gameObject;
+    {
+         pauseMenu = GameObject.FindWithTag("PauseMenu");
+         rollButton = GameObject.FindWithTag("RollButton");
+         rollButtonChild = rollButton.transform.GetChild(1).gameObject;
 
          soundSwitcher.PlayOneShot(start);
+         
+         dice = GameObject.FindWithTag("Dice");
          dicePosition = dice.transform.position;
     }
 
     public void Roll() 
     { 
-        // RollButton.GetComponent<Button>().enabled = false;
-        // RollButtonChild.GetComponent<Text>().enabled = false;
-
+        
         if(dice.GetComponent<Dice>().getCanRoll()) {
-            RollButton.GetComponent<Button>().enabled = false;
-            RollButtonChild.GetComponent<TMPro.TextMeshProUGUI>().enabled = false;
+            rollButton.GetComponent<Button>().enabled = false;
+            rollButtonChild.GetComponent<TMPro.TextMeshProUGUI>().enabled = false;
             
             setPositions();
             dice.GetComponent<Dice>().setCanRoll(false);
+            dice.GetComponent<Dice>().setLanded(false);
 
             StartCoroutine(RollTimer());
         }
@@ -46,16 +49,22 @@ public class Menu : MonoBehaviour
     {
         yield return new WaitForSeconds((float) 5);
 
-        RollButton.GetComponent<Button>().enabled = true;
-        RollButtonChild.GetComponent<TMPro.TextMeshProUGUI>().enabled = true;
+        rollButton.GetComponent<Button>().enabled = true;
+        rollButtonChild.GetComponent<TMPro.TextMeshProUGUI>().enabled = true;
         dice.GetComponent<Dice>().setCanRoll(true);
     }
 
     private void setPositions() {
+        dice.GetComponent<Dice>().Randomize();
         dice.transform.position = dicePosition;
     }
 
-    public void Back() {
-        SceneManager.LoadScene("SampleScene");
+
+    public void PauseMenu() {
+        pauseMenu.GetComponent<PauseMenu>().Switcher();
     }
+
+    // public void Back() {
+    //     SceneManager.LoadScene("SampleScene");
+    // }
 }
