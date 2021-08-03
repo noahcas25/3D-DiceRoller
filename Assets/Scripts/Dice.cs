@@ -8,7 +8,7 @@ public class Dice : MonoBehaviour
 {
 
     private bool landed = false;
-    private bool canRoll = true;
+    private bool canRoll = false;
     private string DiceSideUp;
 
     private int rand1;
@@ -29,7 +29,6 @@ public class Dice : MonoBehaviour
        rand3 = (int) random.Next(1, 270);
 
         this.transform.Rotate(new Vector3(rand1, rand2, rand3));
-
    }
 
     private void OnTriggerEnter(Collider other)

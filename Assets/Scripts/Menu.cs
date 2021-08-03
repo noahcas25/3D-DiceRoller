@@ -20,6 +20,7 @@ public class Menu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+         Application.targetFrameRate = 60;
          pauseMenu = GameObject.FindWithTag("PauseMenu");
          rollButton = GameObject.FindWithTag("RollButton");
          rollButtonChild = rollButton.transform.GetChild(1).gameObject;
