@@ -9,53 +9,47 @@ public class HomeScreen : MonoBehaviour
 {
     public AudioSource soundSwitcher;
     public AudioClip start;
+    public GameObject diceOverlay;
+
+
+    private Animator anim;    
     private int diceIndex = 0;
-    // private int index = 0;
+    private int newIndex = 0;
 
     public void Start() {
         Application.targetFrameRate = 60;
+        anim = GameObject.FindWithTag("TransitionImage").GetComponent<Animator>();
+        anim.CrossFade("SceneSwitchIn", 0, 0, 0, 0);
         soundSwitcher.PlayOneShot(start);
-
-        // BinaryFormatter bf = new BinaryFormatter();
-
-        // FileStream file = File.Create(Application.persistentDataPath + "/diceData.txt");
-        // bf.Serialize(file, diceIndex);
-        // file.Close();
-
     }
 
      void OnEnable() {
           if(PlayerPrefs.HasKey("diceIndex"))
-                this.diceIndex = PlayerPrefs.GetInt("diceIndex");
+                this.newIndex = PlayerPrefs.GetInt("diceIndex");
 
-          setDice(diceIndex);
-
-            // billName = PlayerPrefs.GetString("BillName");
-        //  if(File.Exists(Application.persistentDataPath + "/diceData.txt")) {
-        //         file = File.Open(Application.persistentDataPath + "/diceData.txt", FileMode.Open);
-        //         this.index = (int)bf.Deserialize(file);
-        //         file.Close();
-        // }
+          setDice();
     }
 
-    void OnDisable() {
-        PlayerPrefs.SetInt("diceIndex", diceIndex);
-        PlayerPrefs.Save();
-    }
+    private void setDice() {
+        diceOverlay.transform.GetChild(diceIndex).gameObject.SetActive(false);
+        diceOverlay.transform.GetChild(newIndex).gameObject.SetActive(true);
 
-    private void setDice(int newIndex) {
-        transform.GetChild(0).transform.GetChild(this.diceIndex).gameObject.SetActive(false);
-        transform.GetChild(0).transform.GetChild(newIndex).gameObject.SetActive(true);
-
-        this.diceIndex = newIndex;
+        diceIndex = newIndex;
     }
     
     
-    public void Dice() {
-        SceneManager.LoadScene("3D Dice");
+    public void DiceRoll() {
+        StartCoroutine(Transition("3D Dice"));
+
     }
 
     public void Shop() {
-        SceneManager.LoadScene("Shop");
+        StartCoroutine(Transition("Shop"));
+    }
+
+    private IEnumerator Transition(string scene) {
+        anim.CrossFade("SceneSwitchOut", 0, 0, 0, 0);
+        yield return new WaitForSeconds((float) 1);
+        SceneManager.LoadScene(scene);
     }
 }

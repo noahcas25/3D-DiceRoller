@@ -10,6 +10,7 @@ public class Dice : MonoBehaviour
     private bool landed = false;
     private bool canRoll = false;
     private string DiceSideUp;
+    private bool selected;
 
     private int rand1;
     private int rand2;
@@ -19,7 +20,8 @@ public class Dice : MonoBehaviour
     void Update()
     {
         if(!canRoll) {
-            this.transform.Rotate(new Vector3(45, 45, 0) * (float) 3 * Time.deltaTime);
+            this.transform.parent.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            this.transform.parent.transform.Rotate(new Vector3(45, 45, 0) * (float) 4 * Time.deltaTime);
         } 
    }
 
@@ -34,6 +36,7 @@ public class Dice : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {  
         if(other.CompareTag("Table")) {
+            this.transform.parent.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
             canRoll = true;
             landed = true;
         }

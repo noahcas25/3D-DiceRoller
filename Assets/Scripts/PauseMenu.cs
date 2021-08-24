@@ -7,8 +7,6 @@ public class PauseMenu : MonoBehaviour
 {
    private bool paused = false;
 
-   
-
     public void Switcher() {
         if(paused) 
             Resume();
@@ -28,12 +26,23 @@ public class PauseMenu : MonoBehaviour
         paused = false;
     }
 
+     public void Shop() {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Shop");
+    }
+
     public void Settings() {
-        
+        Resume();
+           
+    }
+
+    public void Back() {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("3d Dice");
     }
 
     public void Quit() {
-        SceneManager.LoadScene("HomeScreen");
         Time.timeScale = 1f;
+        Application.Quit();
     }
 }

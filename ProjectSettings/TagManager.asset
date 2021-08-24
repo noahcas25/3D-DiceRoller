@@ -9,6 +9,8 @@ TagManager:
   - BackButton
   - Dice
   - PauseMenu
+  - DiceOverlay
+  - TransitionImage
   layers:
   - Default
   - TransparentFX

@@ -10,37 +10,42 @@ public class StoreController : MonoBehaviour
 
     private int numChildren;
     private int index = 0;
-
-    private BinaryFormatter bf = new BinaryFormatter();
-    private FileStream file;
-   
+    private int diceIndex = 0;
+    private int newIndex = 0;
    
     void Start() {
-      
+        Application.targetFrameRate = 60;
+
         numChildren = transform.childCount;
 
-      for(int i = 0;  i  < numChildren; i++) {
+      for(int i = 0;  i  < numChildren - 1; i++) {
             transform.GetChild(i).GetComponent<StartMenuRotator>().setPosX(-145*i);
         }         
     }
 
-    void OnLoad() {
-        LoadSave();
+    void OnEnable() {
+          if(PlayerPrefs.HasKey("diceIndex"))
+                this.newIndex = PlayerPrefs.GetInt("diceIndex");
+
+          setDice();
     }
 
-    public void LoadSave() {
-        if(File.Exists(Application.persistentDataPath + "/diceData.txt")) {
-                file = File.Open(Application.persistentDataPath + "/diceData.txt", FileMode.Open);
-                index = (int)bf.Deserialize(file);
-                file.Close();
-        }
+    void OnDisable() {
+        PlayerPrefs.SetInt("diceIndex", diceIndex);
+        PlayerPrefs.Save();
+    }
+
+    public void setDice() {
+        transform.GetChild(6).transform.GetChild(diceIndex).gameObject.SetActive(false);
+        transform.GetChild(6).transform.GetChild(newIndex).gameObject.SetActive(true);
+        diceIndex = newIndex;
     }
 
     public void ButtonClicked(int index) {
-        
         int buttonPosition = transform.GetChild(index).GetComponent<StartMenuRotator>().getPosX();
+        transform.parent.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(buttonPosition, 289, 0);
 
-       transform.parent.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(buttonPosition, 289, 0);
-
+       newIndex = index;
+       setDice();
     }
 }

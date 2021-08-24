@@ -25,6 +25,7 @@ public class TextUpdater : MonoBehaviour
         if(dice.GetComponent<Dice>().getLanded() && diceSideUp != dice.GetComponent<DieSides>().GetDieSideMatchInfo().closestMatch.ToString()) {
             diceSideUp = dice.GetComponent<DieSides>().GetDieSideMatchInfo().closestMatch.ToString();
             GetComponent<TMPro.TextMeshProUGUI>().text = "" + diceSideUp[8];
+            
             if(diceSideUp.Length > 9) {
             GetComponent<TMPro.TextMeshProUGUI>().text += diceSideUp[9];
             }  
