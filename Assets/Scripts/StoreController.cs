@@ -9,7 +9,6 @@ public class StoreController : MonoBehaviour
 {
 
     private int numChildren;
-    private int index = 0;
     private int diceIndex = 0;
     private int newIndex = 0;
    
@@ -17,6 +16,8 @@ public class StoreController : MonoBehaviour
         Application.targetFrameRate = 60;
 
         numChildren = transform.childCount;
+
+        // Sets dice positions so that the camera knows where to point once dice buttons clicked
 
       for(int i = 0;  i  < numChildren - 1; i++) {
             transform.GetChild(i).GetComponent<StartMenuRotator>().setPosX(-145*i);

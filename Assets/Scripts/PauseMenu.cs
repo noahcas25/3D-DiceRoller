@@ -5,9 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-   private bool paused = false;
 
-    public void Switcher() {
+   private bool paused = false;
+   private Animator animator;
+
+    public void Switcher(Animator anim) {
+        this.animator = (Animator) anim;
+
         if(paused) 
             Resume();
         else
@@ -28,21 +32,26 @@ public class PauseMenu : MonoBehaviour
 
      public void Shop() {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("Shop");
+        StartCoroutine(Transition("Shop"));
     }
 
     public void Settings() {
-        Resume();
-           
+        Resume();  
     }
 
     public void Back() {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("3d Dice");
+        StartCoroutine(Transition("HomeScreen"));
     }
 
     public void Quit() {
         Time.timeScale = 1f;
         Application.Quit();
+    }
+
+    private IEnumerator Transition(string scene) {
+        animator.CrossFade("SceneSwitchOutDice", 0, 0, 0, 0);
+        yield return new WaitForSeconds((float) 1);
+        SceneManager.LoadScene(scene);
     }
 }

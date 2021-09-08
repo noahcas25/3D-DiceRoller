@@ -11,6 +11,7 @@ TagManager:
   - PauseMenu
   - DiceOverlay
   - TransitionImage
+  - CanvasOverlay
   layers:
   - Default
   - TransparentFX

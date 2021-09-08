@@ -15,9 +15,8 @@ public class Menu : MonoBehaviour
     private int newIndex = 0;
 
     public GameObject diceOverlay;
-    public AudioSource soundSwitcher;
-    public AudioClip start;
     private GameObject pauseMenu;
+    private Animator anim;    
 
     // Start is called before the first frame update
     void Start()
@@ -26,12 +25,13 @@ public class Menu : MonoBehaviour
          pauseMenu = GameObject.FindWithTag("PauseMenu");
          rollButton = GameObject.FindWithTag("RollButton");
          rollButtonChild = rollButton.transform.GetChild(1).gameObject;
-        
-         soundSwitcher.PlayOneShot(start);
+         anim = GameObject.FindWithTag("TransitionImage").GetComponent<Animator>();
+         anim.CrossFade("SceneSwitchInDice", 0, 0, 0, 0);
     }
 
     // OnEnable of Scene load the dice index from player prefs
     void OnEnable() {
+
           // Check if a dice has been selected and make that the index for setDice()
           if(PlayerPrefs.HasKey("diceIndex"))
                 this.newIndex = PlayerPrefs.GetInt("diceIndex");
@@ -41,8 +41,8 @@ public class Menu : MonoBehaviour
           dice = GameObject.FindWithTag("Dice");
           dicePosition = dice.transform.parent.transform.position;
           
-          Roll();
-          RollTimer();
+          dice.GetComponent<Rigidbody>().useGravity = false;
+          diceOverlay.GetComponent<Rigidbody>().useGravity = false;
     }
 
     void setDice() {
@@ -53,6 +53,12 @@ public class Menu : MonoBehaviour
 
     public void Roll() 
     { 
+        // rb.AddForce(0, 0, thrust, ForceMode.Impulse);
+         dice.GetComponent<Rigidbody>().useGravity = true;
+         diceOverlay.GetComponent<Rigidbody>().AddForce(15, 0, 15, ForceMode.Impulse);
+         dice.GetComponent<Rigidbody>().AddForce(15, 0, 15, ForceMode.Impulse);
+         diceOverlay.GetComponent<Rigidbody>().useGravity = true;
+
         if(dice.GetComponent<Dice>().getCanRoll()) {
             rollButton.GetComponent<Button>().enabled = false;
             rollButtonChild.GetComponent<TMPro.TextMeshProUGUI>().enabled = false;
@@ -67,7 +73,7 @@ public class Menu : MonoBehaviour
 
      private IEnumerator RollTimer() 
     {
-        yield return new WaitForSeconds((float) 5);
+        yield return new WaitForSeconds((float) 4);
 
         rollButton.GetComponent<Button>().enabled = true;
         rollButtonChild.GetComponent<TMPro.TextMeshProUGUI>().enabled = true;
@@ -76,19 +82,25 @@ public class Menu : MonoBehaviour
 
     private void setPositions() {
         dice.GetComponent<Dice>().Randomize();
-        dice.transform.parent.transform.position = dicePosition;
+        diceOverlay.transform.position = dicePosition;
         dice.transform.position = dicePosition;
         dice.GetComponent<Rigidbody>().velocity = Vector3.zero;
         dice.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-        dice.transform.parent.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        dice.transform.parent.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        diceOverlay.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        diceOverlay.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
     }
 
     public void PauseMenu() {
-        pauseMenu.GetComponent<PauseMenu>().Switcher();
+        pauseMenu.GetComponent<PauseMenu>().Switcher(anim);
     }
 
     public void Back() {
-        SceneManager.LoadScene("HomeScreen");
+       StartCoroutine(Transition("HomeScreen"));
+    }
+    
+    private IEnumerator Transition(string scene) {
+        anim.CrossFade("SceneSwitchOutDice", 0, 0, 0, 0);
+        yield return new WaitForSeconds((float) 1);
+        SceneManager.LoadScene(scene);
     }
 }
