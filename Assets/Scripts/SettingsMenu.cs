@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class SettingsMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+   // Function that changes the active canvas to the pauseMenuCanvas;
+    public void Back() {
+        transform.GetChild(0).gameObject.SetActive(true);  
+        transform.GetChild(1).gameObject.SetActive(false);  
     }
 }

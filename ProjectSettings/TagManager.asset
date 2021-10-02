@@ -12,6 +12,8 @@ TagManager:
   - DiceOverlay
   - TransitionImage
   - CanvasOverlay
+  - Backgrounds
+  - SelectedDiceText
   layers:
   - Default
   - TransparentFX
