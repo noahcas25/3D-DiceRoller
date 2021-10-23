@@ -94,7 +94,7 @@ public class HomeScreen : MonoBehaviour
         PlayerPrefs.SetString("BgColor", color);
     }
 
-    // Handles the MaterialButton Function
+    // Changes the ActiveDices Material
 
     public void ChangeMaterial(string matName) {
         diceOverlay.transform.GetChild(newIndex).GetComponent<MeshRenderer>().material = Resources.Load(matName + "/" + diceOverlay.transform.GetChild(newIndex).gameObject.name + "_" + matName + "Material", typeof(Material)) as Material;

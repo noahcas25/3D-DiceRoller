@@ -40,7 +40,6 @@ public class StoreController : MonoBehaviour
           if(PlayerPrefs.HasKey("materialName"))
                 ChangeMaterial(PlayerPrefs.GetString("materialName"));
 
-
           ButtonClicked(newIndex);
     }
 
@@ -83,6 +82,7 @@ public class StoreController : MonoBehaviour
 
     // Function that sets the selected dice and changes camera position
     public void ButtonClicked(int index) {
+
         int buttonPosition = transform.GetChild(index).GetComponent<StartMenuRotator>().getPosX();
         transform.parent.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(buttonPosition, 289, 0);
 

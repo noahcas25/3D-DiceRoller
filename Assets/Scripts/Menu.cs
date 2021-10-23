@@ -20,7 +20,11 @@ public class Menu : MonoBehaviour
 
     public GameObject diceOverlay;
     private GameObject pauseMenu;
-    private Animator anim;    
+    private Animator anim; 
+
+    // Ad variables
+    public AdsManager ads;
+    private int adCounter;
 
     // Start is called before the first frame update
     void Start()
@@ -33,20 +37,13 @@ public class Menu : MonoBehaviour
 
          anim = GameObject.FindWithTag("TransitionImage").GetComponent<Animator>();
          anim.CrossFade("SceneSwitchInDice", 0, 0, 0, 0);
+         adCounter = 0;
     }
 
     // PlayerSettings that are loaded on enable of the scene *
     void OnEnable() {
 
-        
           bg = GameObject.FindWithTag("Backgrounds");
-
-          // Load the selected dice, save the position and turn off gravity settings for dice and its overlay
-          setDice();
-          dice = GameObject.FindWithTag("Dice");
-          dicePosition = dice.transform.parent.transform.position;
-          dice.GetComponent<Rigidbody>().useGravity = false;
-          diceOverlay.GetComponent<Rigidbody>().useGravity = false;
 
           // Load playerPrefs on startUp
           if(PlayerPrefs.HasKey("diceIndex"))
@@ -60,9 +57,16 @@ public class Menu : MonoBehaviour
           if(PlayerPrefs.HasKey("BgColor")) 
                BackgroundChange(PlayerPrefs.GetString("BgColor"));
 
+        // Load the selected dice, save the position and turn off gravity settings for dice and its overlay
+          SetDice();
+          dice = GameObject.FindWithTag("Dice");
+          dicePosition = dice.transform.parent.transform.position;
+          dice.GetComponent<Rigidbody>().useGravity = false;
+          diceOverlay.GetComponent<Rigidbody>().useGravity = false;
 
           if(PlayerPrefs.HasKey("materialName"))
                 ChangeMaterial(PlayerPrefs.GetString("materialName"));
+
     }
 
     // Player settings that are saved on disable of the scene
@@ -72,7 +76,7 @@ public class Menu : MonoBehaviour
     }
 
     // Sets the selected dice as the active one
-    void setDice() {
+    void SetDice() {
         diceOverlay.transform.GetChild(diceIndex).gameObject.SetActive(false);
         diceOverlay.transform.GetChild(newIndex).gameObject.SetActive(true);
     }
@@ -80,9 +84,16 @@ public class Menu : MonoBehaviour
     // Function that rolls the dice
     public void Roll() 
     { 
-        if(dice.GetComponent<Dice>().getCanRoll()) {
+        if(dice.GetComponent<Dice>().GetCanRoll()) {
+            adCounter++;
+
+            //  Plays ad every 5th roll
+            if(adCounter%5==0) {
+                ads.PlayAd();
+            }
             
             // adjusts dice physics on roll
+            diceOverlay.transform.rotation = Quaternion.identity;
             dice.GetComponent<Rigidbody>().useGravity = true;
             diceOverlay.GetComponent<Rigidbody>().useGravity = true;
             diceOverlay.GetComponent<Rigidbody>().AddForce(35, -20, 35, ForceMode.Impulse);
@@ -93,9 +104,9 @@ public class Menu : MonoBehaviour
             rollButtonChild.GetComponent<TMPro.TextMeshProUGUI>().enabled = false;
             
             // position the dice and disable roll function 
-            setPositions();
-            dice.GetComponent<Dice>().setCanRoll(false);
-            dice.GetComponent<Dice>().setLanded(false);
+            SetPositions();
+            dice.GetComponent<Dice>().SetCanRoll(false);
+            dice.GetComponent<Dice>().SetLanded(false);
 
             StartCoroutine(RollTimer());
         }
@@ -108,11 +119,11 @@ public class Menu : MonoBehaviour
         
         rollButton.GetComponent<Button>().enabled = true;
         rollButtonChild.GetComponent<TMPro.TextMeshProUGUI>().enabled = true;
-        dice.GetComponent<Dice>().setCanRoll(true);
+        dice.GetComponent<Dice>().SetCanRoll(true);
     }
 
     // Function that prepares dice for roll
-    private void setPositions() {
+    private void SetPositions() {
         dice.GetComponent<Dice>().Randomize();
         diceOverlay.transform.position = dicePosition;
         dice.transform.position = dicePosition;
@@ -160,6 +171,7 @@ public class Menu : MonoBehaviour
 
     // Calls the pausemenu switcher method that pauses the game
     public void PauseMenu() {
+        volumeSlider.GetComponent<Slider>().value = volume;
         pauseMenu.GetComponent<PauseMenu>().Switcher(anim);
     }
 

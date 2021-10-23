@@ -22,7 +22,7 @@ public class TextUpdater : MonoBehaviour
     
     // Updates the diceSideUp variable when the dice lands and changes the result text based on the result
     void Update() {
-        if(dice.GetComponent<Dice>().getLanded() && diceSideUp != dice.GetComponent<DieSides>().GetDieSideMatchInfo().closestMatch.ToString()) {
+        if(dice.GetComponent<Dice>().GetLanded() && diceSideUp != dice.GetComponent<DieSides>().GetDieSideMatchInfo().closestMatch.ToString()) {
             diceSideUp = dice.GetComponent<DieSides>().GetDieSideMatchInfo().closestMatch.ToString();
             GetComponent<TMPro.TextMeshProUGUI>().text = "" + diceSideUp[8];
             

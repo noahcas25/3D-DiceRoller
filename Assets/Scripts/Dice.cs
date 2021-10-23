@@ -48,22 +48,22 @@ public class Dice : MonoBehaviour
     }
 
     // Function that sets variable canRoll
-    public void setCanRoll(bool value) {
+    public void SetCanRoll(bool value) {
         this.canRoll = value;
     }
 
     // Function that sets variable landed
-    public void setLanded(bool value) {
+    public void SetLanded(bool value) {
         this.landed = value;
     }
     
     // returns canRoll variable
-    public bool getCanRoll() {
+    public bool GetCanRoll() {
         return canRoll;
     }
 
     // returns landed variable
-    public bool getLanded() {
+    public bool GetLanded() {
         return landed;
     }
 }
