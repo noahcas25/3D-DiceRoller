@@ -87,8 +87,8 @@ public class Menu : MonoBehaviour
         if(dice.GetComponent<Dice>().GetCanRoll()) {
             adCounter++;
 
-            //  Plays ad every 8th roll
-            if(adCounter%8==0) {
+            //  Plays ad every 10th roll
+            if(adCounter%10==0) {
                 ads.PlayAd();
             }
             

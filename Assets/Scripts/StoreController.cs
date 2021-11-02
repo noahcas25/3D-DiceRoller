@@ -39,6 +39,8 @@ public class StoreController : MonoBehaviour
 
           if(PlayerPrefs.HasKey("materialName"))
                 ChangeMaterial(PlayerPrefs.GetString("materialName"));
+          else
+                materialName = "WhiteOnBlackMatte";
 
           ButtonClicked(newIndex);
     }
